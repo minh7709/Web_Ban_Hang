@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ShopUI — Mẫu giao diện 7 trang (HTML/CSS/JS)</title>
+  <meta name="description" content="Mẫu SPA HTML/CSS/JS gồm 7 trang: Home, Products, Product, Cart, Checkout, About, Contact" />
+  <style>
+    /* ---------- Variables & Reset ---------- */
+    :root{
+      --bg:#0f1724; --card:#0b1220; --muted:#9aa6b2; --accent:#06b6d4; --accent-2:#7c3aed;
+      --glass: rgba(255,255,255,0.04);
+      --radius:12px; --max-w:1100px;
+      --page-padding:24px;
+      --shadow: 0 6px 20px rgba(2,6,23,0.6);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+    *{box-sizing:border-box}html,body{height:100%;margin:0;background:linear-gradient(180deg,#071126 0%, #07192b 100%);color:#e6eef6}
+    img{max-width:100%;display:block}
+    a{color:inherit;text-decoration:none}
+
+    /* ---------- Layout ---------- */
+    .wrap{max-width:var(--max-w);margin:28px auto;padding:var(--page-padding)}
+    header{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:12px;background:transparent}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-weight:700}
+    nav{display:flex;gap:12px;align-items:center}
+    .nav-link{padding:8px 12px;border-radius:10px;color:var(--muted);font-weight:600}
+    .nav-link.active{background:var(--glass);color:#e6eef6}
+
+    /* ---------- Hero ---------- */
+    .hero{display:grid;grid-template-columns:1fr 440px;gap:24px;align-items:center;margin-top:18px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:22px;border-radius:var(--radius);box-shadow:var(--shadow)}
+    .hero h1{font-size:28px;margin:0 0 8px}
+    .hero p{margin:0;color:var(--muted)}
+    .search{display:flex;margin-top:14px}
+    .search input{flex:1;padding:12px;border-radius:10px 0 0 10px;border:1px solid rgba(255,255,255,0.05);background:transparent;color:inherit}
+    .search button{padding:12px 16px;border-radius:0 10px 10px 0;border:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#041024;font-weight:700}
+
+    /* ---------- Products grid ---------- */
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:18px}
+    .product{padding:12px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.015), transparent);cursor:pointer;transition:transform .18s}
+    .product:hover{transform:translateY(-6px)}
+    .product .imgwrap{height:160px;border-radius:10px;background:linear-gradient(135deg,#0f1724,#14233a);display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:700}
+    .product h3{margin:10px 0 6px;font-size:16px}
+    .price{font-weight:700}
+
+    /* ---------- Responsive ---------- */
+    @media (max-width:980px){.hero{grid-template-columns:1fr;}.grid{grid-template-columns:repeat(2,1fr)}.wrap{padding:18px}}
+    @media (max-width:600px){.grid{grid-template-columns:1fr}.nav-link{display:none}.brand .logo{width:36px;height:36px}}
+
+    /* ---------- Other pages ---------- */
+    .hidden{display:none}
+    .page-title{display:flex;align-items:center;justify-content:space-between}
+    .product-row{display:flex;gap:18px;align-items:center}
+    .product-detail{display:grid;grid-template-columns:420px 1fr;gap:18px}
+    .btn{padding:10px 14px;border-radius:10px;border:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#041024;font-weight:700}
+
+    /* ---------- Cart & Badge ---------- */
+    .cart-btn{position:relative}
+    .badge{position:absolute;top:-6px;right:-6px;background:#fb7185;color:#041024;padding:4px 7px;border-radius:999px;font-weight:700;font-size:12px}
+
+    /* ---------- Forms ---------- */
+    form{display:flex;flex-direction:column;gap:12px}
+    input[type=text],input[type=email],input[type=tel],textarea,select{padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
+    label{font-size:13px;color:var(--muted)}
+
+    /* ---------- Footer ---------- */
+    footer{margin-top:30px;padding:18px;border-radius:12px;background:transparent;color:var(--muted);display:flex;justify-content:space-between}
+
+    /* ---------- Small helpers ---------- */
+    .muted{color:var(--muted)}
+    .pill{background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:999px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo">S</div>
+        <div>
+          <div style="font-weight:700">ShopUI</div>
+          <div class="muted" style="font-size:12px">Mẫu giao diện bán hàng</div>
+        </div>
+      </div>
+      <nav>
+        <a href="#/" class="nav-link" data-link="home">Home</a>
+        <a href="#/products" class="nav-link" data-link="products">Products</a>
+        <a href="#/about" class="nav-link" data-link="about">About</a>
+        <a href="#/contact" class="nav-link" data-link="contact">Contact</a>
+        <a href="#/checkout" class="nav-link" data-link="checkout">Checkout</a>
+        <button class="nav-link cart-btn" id="open-cart">Cart <span class="badge" id="cart-count">0</span></button>
+      </nav>
+    </header>
+
+    <!-- PAGES (single file SPA) -->
+
+    <!-- HOME -->
+    <main id="page-home" class="card">
+      <div class="hero">
+        <div>
+          <h1>Chào mừng đến với ShopUI</h1>
+          <p>Thiết kế mẫu — sạch, responsive và dễ tùy chỉnh. Dùng để trình diễn với khách hàng hoặc làm prototype nhanh.</p>
+          <div class="search">
+            <input id="q" placeholder="Tìm sản phẩm, ví dụ 'Áo khoác'" />
+            <button id="search-btn">Tìm</button>
+          </div>
+
+          <div class="card" style="margin-top:18px">
+            <h3 style="margin:0">Sản phẩm nổi bật</h3>
+            <div class="grid" id="featured"></div>
+          </div>
+        </div>
+
+        <aside class="card" style="height:100%">
+          <h3>Ưu đãi tháng này</h3>
+          <p class="muted">Miễn phí vận chuyển cho đơn hàng trên 1.000.000₫</p>
+          <div style="margin-top:12px">
+            <div class="pill">Giao hàng nhanh</div>
+            <div class="pill" style="margin-left:8px">Thanh toán online</div>
+          </div>
+
+          <div style="margin-top:18px">
+            <h4 style="margin:0">Đăng ký nhận tin</h4>
+            <p class="muted" style="margin:6px 0">Nhập email để nhận khuyến mãi.</p>
+            <div style="display:flex;gap:8px"><input placeholder="you@mail.com" /><button class="btn">Đăng ký</button></div>
+          </div>
+        </aside>
+      </div>
+
+      <section class="card" style="margin-top:18px">
+        <h3>Danh sách sản phẩm</h3>
+        <div class="grid" id="products-grid"></div>
+      </section>
+    </main>
+
+    <!-- PRODUCTS PAGE -->
+    <section id="page-products" class="card hidden">
+      <div class="page-title"><h2>Products</h2><div class="muted">Tìm thấy <span id="total-products">0</span> sản phẩm</div></div>
+      <div style="margin-top:12px" class="grid" id="products-all"></div>
+    </section>
+
+    <!-- PRODUCT DETAIL -->
+    <section id="page-product" class="card hidden">
+      <div class="product-detail">
+        <div class="card">
+          <div class="imgwrap" id="pd-img">Ảnh SP</div>
+        </div>
+        <div>
+          <h2 id="pd-title">Tên sản phẩm</h2>
+          <div class="muted" id="pd-desc">Mô tả ngắn</div>
+          <div style="margin-top:12px;font-size:20px" class="price" id="pd-price">₫0</div>
+          <div style="margin-top:18px"><button class="btn" id="add-to-cart">Thêm vào giỏ</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CART (side modal) -->
+    <div id="cart" class="card hidden" style="position:fixed;right:20px;top:90px;width:360px;z-index:40">
+      <h3>Giỏ hàng</h3>
+      <div id="cart-items" style="max-height:340px;overflow:auto;margin-top:12px"></div>
+      <div style="margin-top:12px;display:flex;justify-content:space-between;align-items:center">
+        <div class="muted">Tổng:</div>
+        <div class="price" id="cart-total">₫0</div>
+      </div>
+      <div style="margin-top:12px;display:flex;gap:8px"><a href="#/checkout" class="btn">Thanh toán</a><button id="clear-cart" class="pill">Xóa</button></div>
+    </div>
+
+    <!-- CHECKOUT -->
+    <section id="page-checkout" class="card hidden">
+      <h2>Checkout</h2>
+      <div style="display:grid;grid-template-columns:1fr 360px;gap:18px;margin-top:12px">
+        <div class="card">
+          <form id="checkout-form">
+            <label>Họ và tên<input type="text" name="name" required /></label>
+            <label>Email<input type="email" name="email" required /></label>
+            <label>Điện thoại<input type="tel" name="phone" required /></label>
+            <label>Địa chỉ<textarea name="address" rows="3"></textarea></label>
+            <label>Phương thức thanh toán<select name="payment"><option>Thanh toán khi nhận hàng</option><option>Thanh toán online</option></select></label>
+            <div style="margin-top:8px"><button class="btn" type="submit">Xác nhận đơn</button></div>
+          </form>
+        </div>
+        <aside class="card">
+          <h4>Đơn hàng</h4>
+          <div id="checkout-items" style="margin-top:12px"></div>
+          <div style="margin-top:12px;display:flex;justify-content:space-between"><div class="muted">Tổng</div><div class="price" id="checkout-total">₫0</div></div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="page-about" class="card hidden">
+      <h2>Về chúng tôi</h2>
+      <p class="muted">Mô tả ngắn về shop — sứ mệnh, tầm nhìn và dịch vụ.</p>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="page-contact" class="card hidden">
+      <h2>Liên hệ</h2>
+      <form id="contact-form">
+        <label>Tên<input type="text" name="name" required /></label>
+        <label>Email<input type="email" name="email" required /></label>
+        <label>Nội dung<textarea name="message" rows="4"></textarea></label>
+        <div><button class="btn" type="submit">Gửi</button></div>
+      </form>
+    </section>
+
+    <footer>
+      <div class="muted">© 2025 ShopUI • Demo</div>
+      <div class="muted">Thiết kế: bạn có thể tùy chỉnh màu & layout</div>
+    </footer>
+  </div>
+
+  <script>
+    /* ---------- Simple SPA router & demo data ---------- */
+    const pages = {
+      home: document.getElementById('page-home'),
+      products: document.getElementById('page-products'),
+      product: document.getElementById('page-product'),
+      checkout: document.getElementById('page-checkout'),
+      about: document.getElementById('page-about'),
+      contact: document.getElementById('page-contact')
+    };
+    const navLinks = document.querySelectorAll('[data-link]');
+    function showPage(name){
+      Object.values(pages).forEach(p=>p.classList.add('hidden'));
+      pages[name].classList.remove('hidden');
+      navLinks.forEach(n=>n.classList.toggle('active', n.dataset.link===name));
+      // close cart if open
+      document.getElementById('cart').classList.add('hidden');
+    }
+    function route(){
+      const hash = location.hash.replace('#/','') || 'home';
+      if(hash.startsWith('product:')){
+        const id = hash.split(':')[1]; openProduct(id); return;
+      }
+      if(pages[hash]) showPage(hash);
+      else showPage('home');
+    }
+    window.addEventListener('hashchange', route);
+    route();
+
+    /* ---------- Demo products ---------- */
+    let products = [];
+
+    async function loadProducts() {
+      try {
+        const res = await fetch("/api/products");
+        products = await res.json();
+        renderProducts();
+      } catch (err) {
+        console.error("Lỗi khi tải sản phẩm:", err);
+      }
+    }
+    loadProducts();
+
+
+    function money(v){return v.toLocaleString('vi-VN') + ' ₫'}
+
+    // render grids
+    const grid = id => document.getElementById(id);
+    function renderProducts(){
+      grid('products-grid').innerHTML = '';
+      grid('products-all').innerHTML = '';
+      grid('featured').innerHTML = '';
+      products.forEach(p=>{
+        const card = document.createElement('div'); card.className='product';
+        card.innerHTML = `\n          <div class=\"imgwrap\">IMG ${p.id}</div>\n          <h3>${p.title}</h3>\n          <div class=\"muted\">${p.desc}</div>\n          <div style=\"display:flex;justify-content:space-between;align-items:center;margin-top:8px\"><div class=\"price\">${money(p.price)}</div><button class=\"btn\" data-id=\"${p.id}\">Chi tiết</button></div>\n        `;
+        grid('products-grid').appendChild(card);
+        grid('products-all').appendChild(card.cloneNode(true));
+        if(p.id<=3) grid('featured').appendChild(card.cloneNode(true));
+      });
+      document.getElementById('total-products').textContent = products.length;
+      attachProductButtons();
+    }
+    renderProducts();
+
+    function attachProductButtons(){
+      document.querySelectorAll('.product .btn').forEach(b=>{
+        b.addEventListener('click', e=>{
+          const id = e.currentTarget.dataset.id; location.hash = `#/product:${id}`;
+        })
+      })
+    }
+
+    function openProduct(id){
+      const p = products.find(x=>x.id==id);
+      if(!p) return showPage('home');
+      showPage('product');
+      document.getElementById('pd-title').textContent = p.title;
+      document.getElementById('pd-desc').textContent = p.desc;
+      document.getElementById('pd-price').textContent = money(p.price);
+      document.getElementById('pd-img').textContent = 'Ảnh ' + p.id;
+      document.getElementById('add-to-cart').dataset.id = p.id;
+    }
+
+    // search
+    document.getElementById('search-btn').addEventListener('click', ()=>{
+      const q = document.getElementById('q').value.trim().toLowerCase();
+      if(!q) return; const results = products.filter(p=>p.title.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q));
+      grid('products-all').innerHTML = '';
+      results.forEach(p=>{
+        const card = document.createElement('div'); card.className='product'; card.innerHTML = `\n          <div class=\"imgwrap\">IMG ${p.id}</div>\n          <h3>${p.title}</h3>\n          <div class=\"muted\">${p.desc}</div>\n          <div style=\"display:flex;justify-content:space-between;align-items:center;margin-top:8px\"><div class=\"price\">${money(p.price)}</div><button class=\"btn\" data-id=\"${p.id}\">Chi tiết</button></div>\n        `; grid('products-all').appendChild(card);
+      });
+      attachProductButtons();
+      showPage('products');
+    })
+
+    /* ---------- Cart (localStorage) ---------- */
+    const CART_KEY = 'demo_cart';
+    function loadCart(){ try{return JSON.parse(localStorage.getItem(CART_KEY))||[];}catch(e){return []} }
+    function saveCart(c){ localStorage.setItem(CART_KEY, JSON.stringify(c)); renderCart(); }
+    function renderCart(){
+      const cart = loadCart();
+      const el = document.getElementById('cart-items'); el.innerHTML='';
+      let total = 0;
+      cart.forEach(item=>{
+        const p = products.find(x=>x.id==item.id);
+        total += p.price*item.qty;
+        const row = document.createElement('div'); row.style.display='flex';row.style.justifyContent='space-between';row.style.padding='8px 0';
+        row.innerHTML = `<div>${p.title} <div class=\"muted\" style=\"font-size:12px\">Số lượng: ${item.qty}</div></div><div>${money(p.price*item.qty)}</div>`;
+        el.appendChild(row);
+      })
+      document.getElementById('cart-total').textContent = money(total);
+      document.getElementById('checkout-total').textContent = money(total);
+      document.getElementById('cart-count').textContent = cart.reduce((s,i)=>s+i.qty,0);
+      // render checkout items
+      const ci = document.getElementById('checkout-items'); ci.innerHTML=''; cart.forEach(item=>{ const p = products.find(x=>x.id==item.id); const r = document.createElement('div'); r.style.padding='6px 0'; r.innerHTML = `${p.title} — ${item.qty} x ${money(p.price)}`; ci.appendChild(r); })
+    }
+    renderCart();
+
+    document.getElementById('open-cart').addEventListener('click', ()=>{
+      const c = document.getElementById('cart'); c.classList.toggle('hidden'); renderCart();
+    })
+    document.getElementById('clear-cart').addEventListener('click', ()=>{ localStorage.removeItem(CART_KEY); renderCart(); })
+
+    document.getElementById('add-to-cart').addEventListener('click', (e)=>{
+      const id = Number(e.currentTarget.dataset.id);
+      const cart = loadCart();
+      const found = cart.find(x=>x.id==id);
+      if(found) found.qty++;
+      else cart.push({id,qty:1});
+      saveCart(cart);
+      alert('Đã thêm vào giỏ');
+    })
+
+    // clicking product detail add buttons from grid
+    document.addEventListener('click', (e)=>{
+      if(e.target.matches('.product .btn')){
+        // handled by attachProductButtons -> routing
+      }
+    })
+
+    // checkout submit
+    document.getElementById('checkout-form').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      localStorage.removeItem(CART_KEY);
+      renderCart();
+      alert('Đơn hàng đã được gửi — đây chỉ là demo.');
+      location.hash = '#/';
+    })
+
+    // contact form
+    document.getElementById('contact-form').addEventListener('submit', (e)=>{ e.preventDefault(); alert('Cảm ơn! Tin nhắn đã được gửi (demo).'); e.target.reset(); })
+
+    // set initial nav click handlers
+    navLinks.forEach(a=>a.addEventListener('click',(e)=>{ e.preventDefault(); const p = a.dataset.link; location.hash = '#/' + p; }))
+
+    // initialize
+    renderProducts(); renderCart();
+  </script>
+</body>
+</html>
