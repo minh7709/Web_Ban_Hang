@@ -1,4 +1,5 @@
 # Web_Ban_Hang
+![UI shop ban hang](./UI.png)
 ```bash
 git clone https://github.com/minh7709/Web_Ban_Hang.git
 cd Web_Ban_Hang
